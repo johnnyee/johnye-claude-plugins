@@ -38,7 +38,7 @@ JohnYe 的 Claude Code 插件集合仓库。
 
 | 属性 | 值 |
 |------|-----|
-| 版本 | 2.1.2 |
+| 版本 | 2.1.3 |
 | 功能 | 任务规划、进度追踪、知识存储 |
 | 文件 | task_plan.md, findings.md, progress.md |
 
