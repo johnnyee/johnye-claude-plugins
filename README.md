@@ -17,6 +17,7 @@ JohnYe 的 Claude Code 插件集合仓库。
 | 插件名称 | 描述 | 版本 |
 |---------|------|------|
 | ralph-loop-custom | JohnYe's custom fork of Ralph Loop with parameter shortcuts (-m, -p) and Windows compatibility fixes | 1.0.0 |
+| planning-with-files | Manus-style persistent markdown files for planning, progress tracking, and knowledge storage | 2.1.2 |
 
 ## 添加新插件
 
@@ -43,3 +44,4 @@ johnye-claude-plugins/
 ## Credits
 
 - **ralph-loop-custom**: Fork of [ralph-loop](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/ralph-loop) from the official [Anthropic Claude Plugins](https://github.com/anthropics/claude-plugins-official) repository.
+- **planning-with-files**: Fork of [planning-with-files](https://github.com/OthmanAdi/planning-with-files) by OthmanAdi (MIT License).

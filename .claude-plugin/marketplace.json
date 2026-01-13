@@ -11,6 +11,12 @@
       "source": "./plugins/ralph-loop-custom",
       "description": "JohnYe's custom fork of Ralph Loop with parameter shortcuts (-m, -p) and Windows compatibility fixes",
       "version": "1.0.0"
+    },
+    {
+      "name": "planning-with-files",
+      "source": "./plugins/planning-with-files",
+      "description": "Manus-style persistent markdown files for planning, progress tracking, and knowledge storage",
+      "version": "2.1.2"
     }
   ]
 }
