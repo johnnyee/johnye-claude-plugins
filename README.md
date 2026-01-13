@@ -1,22 +1,22 @@
 # JohnYe's Claude Code Plugins
 
-这是 JohnYe 的 Claude Code 插件集合仓库。
+JohnYe 的 Claude Code 插件集合仓库。
 
 ## 安装方式
 
 ```bash
 # 添加市场
-/plugin marketplace add YourGitHubUsername/johnye-claude-plugins
+/plugin marketplace add johnnyee/johnye-claude-plugins
 
 # 安装插件
-/plugin install example-plugin@johnye-plugins
+/plugin install ralph-loop-custom@johnye-plugins
 ```
 
 ## 包含的插件
 
 | 插件名称 | 描述 | 版本 |
 |---------|------|------|
-| example-plugin | 示例插件 | 1.0.0 |
+| ralph-loop-custom | JohnYe's custom fork of Ralph Loop with parameter shortcuts (-m, -p) and Windows compatibility fixes | 1.0.0 |
 
 ## 添加新插件
 
@@ -31,11 +31,15 @@ johnye-claude-plugins/
 ├── .claude-plugin/
 │   └── marketplace.json       # 市场清单
 ├── plugins/
-│   └── your-plugin/
+│   └── ralph-loop-custom/
 │       ├── .claude-plugin/
 │       │   └── plugin.json    # 插件清单
-│       ├── skills/            # 技能
-│       ├── agents/            # 代理
-│       └── commands/          # 命令
+│       ├── commands/          # 命令
+│       ├── hooks/             # 钩子
+│       └── scripts/           # 脚本
 └── README.md
 ```
+
+## Credits
+
+- **ralph-loop-custom**: Fork of [ralph-loop](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/ralph-loop) from the official [Anthropic Claude Plugins](https://github.com/anthropics/claude-plugins-official) repository.
