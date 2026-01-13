@@ -1,7 +1,7 @@
 ---
 name: planning-with-files
 version: "2.1.2"
-description: Implements Manus-style file-based planning for complex tasks. Creates task_plan.md, findings.md, and progress.md. Use when starting complex multi-step tasks, research projects, or any task requiring >5 tool calls.
+description: This skill should be used when the user asks to "create a plan", "make a task plan", "plan this task", "规划任务", "创建计划", "制定计划", "任务规划", "写个计划", "帮我规划", "分步骤执行", "多步骤任务", "复杂任务", or needs Manus-style file-based planning with task_plan.md, findings.md, and progress.md for complex multi-step tasks, research projects, or any task requiring >5 tool calls.
 user-invocable: true
 allowed-tools:
   - Read
