@@ -1,0 +1,9 @@
+{
+  "name": "ralph-loop-custom",
+  "description": "JohnYe's custom fork of Ralph Loop with parameter shortcuts (-m, -p) and Windows compatibility fixes. Continuous self-referential AI loops for iterative development.",
+  "version": "1.0.0",
+  "author": {
+    "name": "JohnYe",
+    "email": "johnnyee@example.com"
+  }
+}

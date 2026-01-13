@@ -1,0 +1,16 @@
+{
+  "name": "johnye-plugins",
+  "description": "JohnYe's Claude Code Plugin Collection",
+  "owner": {
+    "name": "JohnYe",
+    "email": "johnnyee@example.com"
+  },
+  "plugins": [
+    {
+      "name": "ralph-loop-custom",
+      "source": "./plugins/ralph-loop-custom",
+      "description": "JohnYe's custom fork of Ralph Loop with parameter shortcuts (-m, -p) and Windows compatibility fixes",
+      "version": "1.0.0"
+    }
+  ]
+}
