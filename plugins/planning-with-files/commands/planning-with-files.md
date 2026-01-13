@@ -1,11 +1,51 @@
 ---
 description: "启动 Manus 风格的文件规划系统，创建 task_plan.md、findings.md 和 progress.md"
-argument-hint: "[任务描述]"
+argument-hint: "[任务描述] 或 --clean 清理旧文件开始新任务"
 ---
 
 # Planning with Files
 
 你已激活 **Manus 风格文件规划系统**。
+
+## ⚠️ 首要任务：检测旧规划文件
+
+**在开始任何工作之前，你必须先检查项目根目录是否存在以下文件：**
+- `task_plan.md`
+- `findings.md`
+- `progress.md`
+
+### 检测逻辑
+
+```
+如果用户参数包含 "--clean"：
+  → 直接删除旧文件，创建新文件，开始新任务
+
+如果检测到任意规划文件已存在：
+  → 使用 AskUserQuestion 询问用户：
+    1. "继续上次任务" - 读取现有文件，继续执行
+    2. "归档并开始新任务" - 将旧文件移动到 .planning/archived/YYYYMMDD_HHMMSS/，然后创建新文件
+    3. "覆盖并开始新任务" - 直接删除旧文件，创建新文件
+
+如果没有检测到规划文件：
+  → 直接创建新文件，开始新任务
+```
+
+### 归档目录结构
+
+```
+.planning/
+└── archived/
+    ├── 20260113_143000/
+    │   ├── task_plan.md
+    │   ├── findings.md
+    │   └── progress.md
+    └── 20260114_091500/
+        ├── task_plan.md
+        ├── findings.md
+        └── progress.md
+```
+
+---
 
 ## 核心原则
 
@@ -16,7 +56,9 @@ Filesystem = Disk (持久、无限)
 → 重要内容必须写入磁盘
 ```
 
-## 立即执行
+## 创建规划文件
+
+检测/处理完旧文件后，创建以下文件：
 
 1. **创建 `task_plan.md`** - 任务阶段和进度追踪
 2. **创建 `findings.md`** - 研究发现和知识存储
@@ -57,6 +99,6 @@ Filesystem = Disk (持久、无限)
 
 ---
 
-**现在开始**：请描述你的任务，我将为你创建规划文件并开始执行。
+**用户参数**：$ARGUMENTS
 
-如果你提供了任务描述：$ARGUMENTS
+**现在开始**：首先检测旧规划文件，然后根据检测结果和用户参数决定下一步操作。
