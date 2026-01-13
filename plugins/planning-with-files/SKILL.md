@@ -231,9 +231,9 @@ if action_failed:
 
 ## 模板位置
 
-- `${CLAUDE_PLUGIN_ROOT}/templates/task_plan.md` — 阶段追踪
-- `${CLAUDE_PLUGIN_ROOT}/templates/findings.md` — 研究存储
-- `${CLAUDE_PLUGIN_ROOT}/templates/progress.md` — 会话日志
+- `templates/task_plan.md` — 阶段追踪
+- `templates/findings.md` — 研究存储
+- `templates/progress.md` — 会话日志
 
 ---
 
