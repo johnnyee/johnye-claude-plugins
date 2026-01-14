@@ -1,6 +1,6 @@
 ---
 name: planning-with-files
-version: "2.1.3"
+version: "2.2.0"
 description: This skill should be used when the user asks to "create a plan", "make a task plan", "plan this task", "规划任务", "创建计划", "制定计划", "任务规划", "写个计划", "帮我规划", "分步骤执行", "多步骤任务", "复杂任务", or needs Manus-style file-based planning with task_plan.md, findings.md, and progress.md for complex multi-step tasks, research projects, or any task requiring >5 tool calls.
 user-invocable: true
 allowed-tools:
@@ -21,7 +21,7 @@ hooks:
     - matcher: "Write|Edit|Bash"
       hooks:
         - type: command
-          command: "cat task_plan.md 2>/dev/null | head -30 || true"
+          command: "cat .planning/*/task_plan.md 2>/dev/null | head -30 || cat task_plan.md 2>/dev/null | head -30 || true"
   PostToolUse:
     - matcher: "Write|Edit"
       hooks:
@@ -39,40 +39,74 @@ hooks:
 
 ---
 
-## ⚠️ 首要任务：检测旧规划文件
+## ⚠️ 首要任务：多会话隔离
 
-**在开始任何工作之前，你必须先检查项目根目录是否存在以下文件：**
-- `task_plan.md`
-- `findings.md`
-- `progress.md`
+**本插件支持同一目录下多个会话并发执行任务。**
+
+### 会话 ID 生成
+
+每次启动新任务时，必须生成唯一的 `session_id`（8 字符十六进制）：
+
+```bash
+# 生成 session_id
+session_id=$(head -c 4 /dev/urandom | xxd -p)
+# 示例输出：a1b2c3d4
+```
+
+### 文件存储结构
+
+```
+.planning/
+├── a1b2c3d4/              # 会话1 的规划文件
+│   ├── task_plan.md
+│   ├── findings.md
+│   └── progress.md
+├── e5f6g7h8/              # 会话2 的规划文件
+│   ├── task_plan.md
+│   ├── findings.md
+│   └── progress.md
+└── archived/              # 归档的旧会话
+    └── 20260113_143000/
+        └── ...
+```
+
+### 会话管理逻辑
+
+```
+启动时：
+1. 生成唯一 session_id（8字符十六进制）
+2. 创建目录 .planning/{session_id}/
+3. 在该目录下创建 task_plan.md, findings.md, progress.md
+4. 在 task_plan.md 头部记录 session_id
+
+整个会话期间：
+- 始终操作 .planning/{session_id}/ 目录下的文件
+- 不要操作其他会话的文件
+
+任务完成后：
+- 可选择保留或归档到 .planning/archived/
+```
+
+---
+
+## 检测旧规划文件
+
+**在开始任何工作之前，检查是否存在旧的规划文件：**
 
 ### 检测逻辑
 
 ```
 如果用户参数包含 "--clean"：
-  → 直接删除旧文件，创建新文件，开始新任务
+  → 直接创建新会话，开始新任务
 
-如果检测到任意规划文件已存在：
+如果检测到 .planning/ 目录下有活跃会话：
   → 使用 AskUserQuestion 询问用户：
-    1. "继续上次任务" - 读取现有文件，继续执行
-    2. "归档并开始新任务" - 将旧文件移动到 .planning/archived/YYYYMMDD_HHMMSS/，然后创建新文件
-    3. "覆盖并开始新任务" - 直接删除旧文件，创建新文件
+    1. "继续某个会话" - 列出现有会话，让用户选择
+    2. "开始新会话" - 生成新 session_id，创建新目录
+    3. "归档所有旧会话并开始新任务" - 移动到 archived/
 
-如果没有检测到规划文件：
-  → 直接创建新文件，开始新任务
-```
-
-### 归档目录结构
-
-```
-.planning/
-└── archived/
-    ├── 20260113_143000/
-    │   ├── task_plan.md
-    │   ├── findings.md
-    │   └── progress.md
-    └── 20260114_091500/
-        └── ...
+如果没有检测到任何会话：
+  → 生成 session_id，创建新目录，开始新任务
 ```
 
 ---
@@ -82,9 +116,9 @@ hooks:
 | 位置 | 存放内容 |
 |------|----------|
 | 技能目录 (`${CLAUDE_PLUGIN_ROOT}/`) | 模板、脚本、参考文档 |
-| 你的项目目录 | `task_plan.md`, `findings.md`, `progress.md` |
+| 你的项目目录 `.planning/{session_id}/` | `task_plan.md`, `findings.md`, `progress.md` |
 
-> **注意**：规划文件应创建在你的项目根目录，而不是技能安装目录。
+> **注意**：规划文件应创建在 `.planning/{session_id}/` 目录下，确保多会话隔离。
 
 ---
 
@@ -101,13 +135,13 @@ Filesystem = Disk (持久、无限)
 
 ## 快速开始
 
-处理完旧文件后，执行以下步骤：
-
-1. **创建 `task_plan.md`** — 参考 [templates/task_plan.md](templates/task_plan.md)
-2. **创建 `findings.md`** — 参考 [templates/findings.md](templates/findings.md)
-3. **创建 `progress.md`** — 参考 [templates/progress.md](templates/progress.md)
-4. **决策前重读计划** — 刷新注意力窗口中的目标
-5. **每个阶段后更新** — 标记完成，记录错误
+1. **生成 session_id** — 8 字符十六进制
+2. **创建 `.planning/{session_id}/` 目录**
+3. **创建 `task_plan.md`** — 参考 [templates/task_plan.md](templates/task_plan.md)
+4. **创建 `findings.md`** — 参考 [templates/findings.md](templates/findings.md)
+5. **创建 `progress.md`** — 参考 [templates/progress.md](templates/progress.md)
+6. **决策前重读计划** — 刷新注意力窗口中的目标
+7. **每个阶段后更新** — 标记完成，记录错误
 
 ---
 
@@ -115,7 +149,7 @@ Filesystem = Disk (持久、无限)
 
 | 文件 | 用途 | 更新时机 |
 |------|------|----------|
-| `task_plan.md` | 阶段、进度、决策 | 每个阶段后 |
+| `task_plan.md` | 阶段、进度、决策、session_id | 每个阶段后 |
 | `findings.md` | 研究、发现 | 任何发现后 |
 | `progress.md` | 会话日志、测试结果 | 整个会话中 |
 
@@ -221,6 +255,7 @@ if action_failed:
 - 构建/创建项目
 - 跨越多次工具调用的任务
 - 任何需要组织的任务
+- **同一目录下多个会话并发执行**
 
 **跳过场景：**
 - 简单问题
@@ -247,7 +282,8 @@ if action_failed:
 | 把所有内容塞进上下文 | 将大内容存储到文件 |
 | 立即开始执行 | 先创建计划文件 |
 | 重复失败的操作 | 追踪尝试，变换策略 |
-| 在技能目录创建文件 | 在项目目录创建文件 |
+| 在技能目录创建文件 | 在 .planning/{session_id}/ 创建文件 |
+| 多会话共用同一文件 | 每个会话使用独立的 session_id 目录 |
 
 ---
 
