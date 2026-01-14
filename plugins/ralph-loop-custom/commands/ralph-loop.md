@@ -1,6 +1,6 @@
 ---
 description: "Start Ralph Loop in current session"
-argument-hint: "PROMPT [-m N] [-p TEXT]"
+argument-hint: "[-m N] [-p TEXT] PROMPT..."
 allowed-tools: ["Bash(${CLAUDE_PLUGIN_ROOT}/scripts/setup-ralph-loop.sh:*)"]
 hide-from-slash-command-tool: "true"
 ---
