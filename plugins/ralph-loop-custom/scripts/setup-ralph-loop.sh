@@ -27,6 +27,16 @@ generate_loop_id() {
 
 LOOP_ID=$(generate_loop_id)
 
+# [2026-01-14] 修复参数解析问题：
+# 当命令文档使用 "$ARGUMENTS" 传递参数时，整个字符串会被当作一个参数
+# 需要手动拆分成多个参数，但不能使用 eval（会将 # 解释为注释）
+if [[ $# -eq 1 && "$1" == *" "* ]]; then
+  # 只收到一个参数且包含空格，需要拆分
+  # 使用 read -a 将字符串拆分为数组（安全，不会解释 #）
+  IFS=' ' read -r -a args <<< "$1"
+  set -- "${args[@]}"
+fi
+
 # Parse arguments
 PROMPT_PARTS=()
 MAX_ITERATIONS=0
