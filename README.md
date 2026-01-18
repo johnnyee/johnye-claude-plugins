@@ -11,6 +11,7 @@ JohnYe 的 Claude Code 插件集合仓库。
 # 安装插件（选择你需要的）
 /plugin install ralph-loop-custom@johnye-plugins
 /plugin install planning-with-files@johnye-plugins
+/plugin install ui-ux-pro-max@johnye-plugins
 ```
 
 ## 插件列表
@@ -58,6 +59,43 @@ Filesystem = Disk (持久、无限)
 
 ---
 
+### 3. ui-ux-pro-max
+
+> UI/UX 设计智能助手，提供 50+ 设计风格、97 个调色板、57 个字体配对和 9 个技术栈
+
+| 属性 | 值 |
+|------|-----|
+| 版本 | 1.0.0 |
+| 功能 | 设计系统生成、样式搜索、调色板推荐、字体配对 |
+| 特点 | BM25 搜索引擎、多技术栈支持、设计规范库 |
+
+**命令**：
+- `/ui-ux-pro-max [查询] --design-system` - 生成完整设计系统
+- `/ui-ux-pro-max [查询] --domain <domain>` - 搜索特定领域（style/color/typography/ux）
+- `/ui-ux-pro-max [查询] --stack <stack>` - 获取技术栈特定指南
+
+**支持的技术栈**：
+- 前端框架：React, Next.js, Vue, Svelte
+- 移动端：SwiftUI, React Native, Flutter
+- CSS 框架：Tailwind CSS, shadcn/ui
+
+**使用示例**：
+```bash
+# 生成 SaaS 仪表板设计系统
+/ui-ux-pro-max "SaaS dashboard modern" --design-system -p "My Project"
+
+# 搜索玻璃态设计风格
+/ui-ux-pro-max "glassmorphism" --domain style
+
+# 获取 React 性能优化指南
+/ui-ux-pro-max "performance optimization" --stack react
+
+# 搜索金融科技配色方案
+/ui-ux-pro-max "fintech professional" --domain color
+```
+
+---
+
 ## 目录结构
 
 ```
@@ -71,15 +109,22 @@ johnye-claude-plugins/
 │   │   ├── commands/             # 命令定义
 │   │   ├── hooks/                # 钩子脚本
 │   │   └── scripts/              # 辅助脚本
-│   └── planning-with-files/
+│   ├── planning-with-files/
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json       # 插件配置
+│   │   ├── commands/             # 命令定义
+│   │   ├── templates/            # 规划文件模板
+│   │   ├── scripts/              # 辅助脚本
+│   │   ├── SKILL.md              # 技能文档
+│   │   ├── reference.md          # Manus 原则参考
+│   │   └── examples.md           # 使用示例
+│   └── ui-ux-pro-max/
 │       ├── .claude-plugin/
 │       │   └── plugin.json       # 插件配置
 │       ├── commands/             # 命令定义
-│       ├── templates/            # 规划文件模板
-│       ├── scripts/              # 辅助脚本
-│       ├── SKILL.md              # 技能文档
-│       ├── reference.md          # Manus 原则参考
-│       └── examples.md           # 使用示例
+│       ├── scripts/              # BM25 搜索脚本
+│       ├── data/                 # 设计规范数据库
+│       └── SKILL.md              # 技能文档
 └── README.md
 ```
 
